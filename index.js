@@ -201,11 +201,11 @@ bot.on('message', function (event) {
 // Bot所監聽的webhook路徑與port
 
 
-
+/*0
 bot.listen('/linewebhook', 8080, function () {
     console.log('[BOT已準備就緒]');
 });
-
+*/
 app.post('/linewebhook',function(){
 	bot.on('message',function (event) { 
 	if(event.message.text==="抽"){
