@@ -201,60 +201,8 @@ bot.on('message', function (event) {
 // Bot所監聽的webhook路徑與port
 
 
-/*0
+
 bot.listen('/linewebhook', 8080, function () {
     console.log('[BOT已準備就緒]');
 });
-*/
-app.post('/linewebhook',function(){
-	bot.on('message',function (event) { 
-	if(event.message.text==="抽"){
-		demo(function(req,img){
-			x = Math.floor(Math.random()*img.length);
-			var url = 'https://oursogo.com/'
-			var msg = [{
-			type: 'image',
-			originalContentUrl: url + img[x],
-			previewImageUrl: url +img[x]
-		}];
-			
-		event.reply(msg);	
-	})
-		
-		
-		
-		
-		
-		//console.log(x);
-		
-		//console.log(msg.length);
-			
-	}
-	if(event.message.text==="sexy"){
-		demo(function(req,res){
-			
-			bot.push(`${event.source.userId}`, msg);
-			
-			
-		})
-		
-		
-		
-	}
-		
-	
 
-
-
-
-
-
-});
-	
-	
-	
-	
-})
-
-
-app.listen(8080)
