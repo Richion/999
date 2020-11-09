@@ -1,14 +1,9 @@
-const http = require("http");
-
-const hostname = "127.0.0.1";
-const port = 3000;
-
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;var linebot = require('linebot');
+var linebot = require('linebot');
 var request = require('request');
 
 var cheerio = require('cheerio');
-	
+const express = require('express');
+const app = express();	
 
 
 
@@ -202,17 +197,14 @@ bot.on('message', function (event) {
 */
 
 // Bot所監聽的webhook路徑與port
-
-
+const linebotParser = bot.parser();
+app.post('/webhook', linebotParser);
 
 bot.listen('/linewebhook', 3000, function () {
     console.log('[BOT已準備就緒]');
 });
 
-  res.setHeader("Content-Type", "text/plain");
-  res.end("Hello World\n");
-});
-
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+const server = app.listen(process.env.PORT || 80, function() {
+    let port = server.address().port;
+    console.log('目前的port是', port);
 });
