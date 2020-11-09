@@ -2,10 +2,13 @@ var linebot = require('linebot');
 var request = require('request');
 
 var cheerio = require('cheerio');
+const express = require("express")
+const bodyParser = require("body-parser")
 
 
-
-
+const app = express()
+const PORT = 3000
+app.use(bodyParser.json())
 
 var url = 'https://oursogo.com/forum-174-1.html';
 
@@ -79,7 +82,7 @@ var bot = linebot({
   channelAccessToken: 'VgWXWX4q7uA4WjGaZPM47YUDkABofwitC5b1aa0rGVw4F2YOdc7fS0Oy0bk8LDi88uuZVCHAR2kVWJ4rjYBcCZGarHx+yZQrdvIEJsp3wAdPYkydhDrm4YSFnPrse/wbJBZUXW/RqIZxbX55i+yWTAdB04t89/1O/w1cDnyilFU='
 });
 
-var linebotParser = bot.on('message',function (event) { 
+ bot.on('message',function (event) { 
 	if(event.message.text==="抽"){
 		demo(function(req,img){
 			x = Math.floor(Math.random()*img.length);
@@ -203,4 +206,55 @@ bot.listen('/linewebhook', 8080, function () {
     console.log('[BOT已準備就緒]');
 });
 
+app.post('/linewebhook',function(){
+	bot.on('message',function (event) { 
+	if(event.message.text==="抽"){
+		demo(function(req,img){
+			x = Math.floor(Math.random()*img.length);
+			var url = 'https://oursogo.com/'
+			var msg = [{
+			type: 'image',
+			originalContentUrl: url + img[x],
+			previewImageUrl: url +img[x]
+		}];
+			
+		event.reply(msg);	
+	})
+		
+		
+		
+		
+		
+		//console.log(x);
+		
+		//console.log(msg.length);
+			
+	}
+	if(event.message.text==="sexy"){
+		demo(function(req,res){
+			
+			bot.push(`${event.source.userId}`, msg);
+			
+			
+		})
+		
+		
+		
+	}
+		
+	
 
+
+
+
+
+
+});
+	
+	
+	
+	
+})
+
+
+app.listen(8080)
