@@ -1,4 +1,4 @@
-var linebot = require('linebot');
+/*var linebot = require('linebot');
 var request = require('request');
 
 var cheerio = require('cheerio');
@@ -61,7 +61,7 @@ function demo(callbcak){
 });	
 }
 module.exports = demo;
-
+*/
 
 //demo(function(req,res){
 	
@@ -75,7 +75,7 @@ module.exports = demo;
 
 
 // 填入辨識Line Channel的資訊
-
+/*
 var bot = linebot({
   channelId: '1655189233',
   channelSecret: 'b6657925a6344cdae0f0cd9263b16142',
@@ -125,7 +125,7 @@ var bot = linebot({
 
 
 });
-
+*/
 /*
 bot.on('message', function(event) {
    var myReply='';
@@ -200,7 +200,7 @@ bot.on('message', function (event) {
 
 // Bot所監聽的webhook路徑與port
 
-
+/*
 
 bot.listen('/linewebhook', 8080, function () {
     console.log('[BOT已準備就緒]');
@@ -217,3 +217,28 @@ app.listen(process.env.PORT||80,function(){
 	
 })
  
+*/
+
+var linebot = require('linebot');
+var express = require('express');
+
+var bot = linebot({
+  channelId: '1655189233',
+  channelSecret: 'b6657925a6344cdae0f0cd9263b16142',
+  channelAccessToken: 'VgWXWX4q7uA4WjGaZPM47YUDkABofwitC5b1aa0rGVw4F2YOdc7fS0Oy0bk8LDi88uuZVCHAR2kVWJ4rjYBcCZGarHx+yZQrdvIEJsp3wAdPYkydhDrm4YSFnPrse/wbJBZUXW/RqIZxbX55i+yWTAdB04t89/1O/w1cDnyilFU='
+});
+
+
+bot.on('message', function(event) {
+  console.log(event); //把收到訊息的 event 印出來看看
+});
+
+const app = express();
+const linebotParser = bot.parser();
+app.post('/', linebotParser);
+
+//因為 express 預設走 port 3000，而 heroku 上預設卻不是，要透過下列程式轉換
+var server = app.listen(process.env.PORT || 8080, function() {
+  var port = server.address().port;
+  console.log("App now running on port", port);
+});
