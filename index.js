@@ -205,7 +205,7 @@ bot.on('message', function (event) {
 bot.listen('/linewebhook', 8080, function () {
     console.log('[BOT已準備就緒]');
 });
-app.get("/",function(req,res){
+app.get("/linewebhook",function(req,res){
 	
 	res.send("123")
 	
