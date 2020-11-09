@@ -202,8 +202,14 @@ bot.on('message', function (event) {
 
 
 
-app.listen('/linewebhook', 8080, function () {
+bot.listen('/linewebhook', 8080, function () {
     console.log('[BOT已準備就緒]');
 });
 
+app.listen(process.env.PORT||80,function(){
+	
+	console.log('[BOT已準備就緒')
+	
+	
+})
  
