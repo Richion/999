@@ -5,7 +5,7 @@ var cheerio = require('cheerio');
 const express = require('express');
 const app = express();	
 
-const linebotParser = bot.parser();
+//const linebotParser = bot.parser();
 
 
 var url = 'https://oursogo.com/forum-174-1.html';
@@ -198,13 +198,14 @@ bot.on('message', function (event) {
 
 // Bot所監聽的webhook路徑與port
 
-app.post('/webhook', linebotParser);
+//app.post('/webhook', linebotParser);
 
 bot.listen('/linewebhook', 3000, function () {
     console.log('[BOT已準備就緒]');
 });
-
+/*
 const server = app.listen(process.env.PORT || 8080, function() {
     let port = server.address().port;
     console.log('目前的port是', port);
 });
+*/
