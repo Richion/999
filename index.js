@@ -1,266 +1,52 @@
-/*var linebot = require('linebot');
-var request = require('request');
-
-var cheerio = require('cheerio');
-const express = require("express")
-const bodyParser = require("body-parser")
-
-
-const app = express()
-const PORT = 3000
-app.use(bodyParser.json())
-
-var url = 'https://oursogo.com/forum-174-1.html';
-
-function demo(callbcak){
-	request.get(url,function(err,req,body){
-	
-	var $ = cheerio.load(body);
-	var txt = []
-	$('th.new > a.xst').each(function(){
-		
-		txt.push($(this).attr('href'));
-		
-		
-	
-		
-	});
-	//console.log(txt)
-	
-	for(i=0;i<txt.length;i++){
-		request.get(txt[i],function(err,res,body){
-			
-			var $ = cheerio.load(body)
-			var msg = [];
-			$('.zoom').each(function(req,res){
-				
-				msg.push($(this).attr('zoomfile'))
-				
-				
-				
-				
-			});
-			//console.log(msg);
-			
-			
-			callbcak(err,msg)
-		})
-		
-		
-		
-		
-	}
-	
-		
-	
-	
-	
-	
-	
-	
-});	
-}
-module.exports = demo;
-*/
-
-//demo(function(req,res){
-	
-	
-	//console.log(res)
-	
-	
-//})
-
-
-
-
-// 填入辨識Line Channel的資訊
-/*
-var bot = linebot({
-  channelId: '1655189233',
-  channelSecret: 'b6657925a6344cdae0f0cd9263b16142',
-  channelAccessToken: 'VgWXWX4q7uA4WjGaZPM47YUDkABofwitC5b1aa0rGVw4F2YOdc7fS0Oy0bk8LDi88uuZVCHAR2kVWJ4rjYBcCZGarHx+yZQrdvIEJsp3wAdPYkydhDrm4YSFnPrse/wbJBZUXW/RqIZxbX55i+yWTAdB04t89/1O/w1cDnyilFU='
-});
-
- bot.on('message',function (event) { 
-	if(event.message.text==="抽"){
-		demo(function(req,img){
-			x = Math.floor(Math.random()*img.length);
-			var url = 'https://oursogo.com/'
-			var msg = [{
-			type: 'image',
-			originalContentUrl: url + img[x],
-			previewImageUrl: url +img[x]
-		}];
-			
-		event.reply(msg);	
-	})
-		
-		
-		
-		
-		
-		//console.log(x);
-		
-		//console.log(msg.length);
-			
-	}
-	if(event.message.text==="sexy"){
-		demo(function(req,res){
-			
-			bot.push(`${event.source.userId}`, msg);
-			
-			
-		})
-		
-		
-		
-	}
-		
-	
-
-
-
-
-
-
-});
-*/
-/*
-bot.on('message', function(event) {
-   var myReply='';
-   
-   if (event.message.text === 'text') {
-      myReply=processText(event.message.text);
-   }
-  
-   if (event.message.text === 'sticker') {
-		 var msg = event.reply({
-		type: 'image',
-		originalContentUrl: 'https://example.com/original.jpg',
-		previewImageUrl: 'https://example.com/preview.jpg'
-		});
-		bot.push(`${event.source.userId}`, msg);
-	
-   }
-   if (event.message.text === 'image') {
-      myReply='這照片好帥！';
-	  var myReply = demo(function(req,res){
-		
-		bot.push(`${event.source.userId}`, [res]);
-		
-		});
-	
-   }
-   
-   event.reply(myReply).then(function(data) {
-      // success 
-      console.log('訊息已傳送！');
-   }).catch(function(error) {
-      // error 
-      console.log('error');
-   });
-});
-
-*/
-// 當有人傳送訊息給Bot時
-
-/*
-function intervalFunc() {
- setTimeout(function () {
-    var userId = 'U0750078411b8196d99206e5474e10511';
-    var sendMsg = demo(function(req,res){
-		
-		bot.push(userId, [res]);
-		
-	});
-    bot.push(userId, [sendMsg]);
-    console.log('userId: ' + userId);
-    console.log('send: ' + sendMsg);
-	}, 3000);
-}
-
-
-setInterval(intervalFunc, 1500);
-*/
-/*
-bot.on('message', function (event) {
-    // event.message.text是使用者傳給bot的訊息
-    // 準備要回傳的內容
-    var replyMsg = `Hello你剛才說的是:${event.source.userId}`;
-	console.log(`${event.source.userId}`);
-    // 透過event.reply(要回傳的訊息)方法將訊息回傳給使用者
-    event.reply(replyMsg).then(function (data) {
-        // 當訊息成功回傳後的處理
-    }).catch(function (error) {
-        // 當訊息回傳失敗後的處理
-    });
-});
-*/
-
-// Bot所監聽的webhook路徑與port
-
-/*
-
-bot.listen('/linewebhook', 8080, function () {
-    console.log('[BOT已準備就緒]');
-});
-app.get("/linewebhook",function(req,res){
-	
-	res.send("123")
-	
-})
-app.listen(process.env.PORT||80,function(){
-	
-	console.log('[BOT已準備就緒')
-	
-	
-})
- 
-*/
-
 'use strict';
-const result = require('dotenv').config();
-if (result.error) throw result.error
 
-const linebot = require('linebot');
-const Express = require('express');
-const BodyParser = require('body-parser');
+const line = require('@line/bot-sdk');
+const express = require('express');
 
-// Line Channel info
-const bot = linebot({
-  channelId: process.env.LINE_CHANNEL_ID,
-  channelSecret: process.env.LIEN_CHANNEL_SECRET,
-  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
+const defaultAccessToken = '***********************';
+const defaultSecret = '***********************';
+
+// create LINE SDK config from env variables
+const config = {
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN || defaultAccessToken,
+  channelSecret: process.env.CHANNEL_SECRET || defaultSecret,
+};
+
+// create LINE SDK client
+const client = new line.Client(config);
+
+// create Express app
+// about Express itself: https://expressjs.com/
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
 });
 
-const linebotParser = bot.parser();
-const app = Express();
-// for line webhook usage
-app.post('/linewebhook', linebotParser);
-
-app.use(BodyParser.urlencoded({ extended: true }));
-app.use(BodyParser.json());
-
-// a http endpoint for trigger broadcast
-app.post('/broadcast', (req, res) => {
-  bot.broadcast(req.body.message).then(() => {
-    res.send('broadcast ok');
-  }).catch(function (error) {
-    res.send('broadcast fail');
-  });
+// register a webhook handler with middleware
+// about the middleware, please refer to doc
+app.post('/webhook', line.middleware(config), (req, res) => {
+  Promise
+    .all(req.body.events.map(handleEvent))
+    .then((result) => res.json(result));
 });
 
-app.listen(3000);
+// event handler
+function handleEvent(event) {
+  if (event.type !== 'message' || event.message.type !== 'text') {
+    // ignore non-text-message event
+    return Promise.resolve(null);
+  }
 
-// echo user message
-bot.on('message', function (event) {
-  // get user message from `event.message.text`
-  // reply same message
-  var replyMsg = `${event.message.text}`;
-  event.reply(replyMsg).then(function (data) {
-    console.log('ok')
-  }).catch(function (error) {
-    console.error(error)
-  });
+  // create a echoing text message
+  const echo = { type: 'text', text: event.message.text };
+
+  // use reply API
+  return client.replyMessage(event.replyToken, echo);
+}
+
+// listen on port
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`listening on ${port}`);
 });
